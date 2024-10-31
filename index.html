@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            padding: 20px;
+        }
+        .calculator {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+        .section {
+            background: #111;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .input-group input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #333;
+            color: #fff;
+            font-size: 24px;
+            width: 200px;
+            padding: 5px 0;
+        }
+        .input-group .unit {
+            color: #666;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        .results {
+            text-align: right;
+        }
+        .main-result {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: 300;
+            color: #4169e1;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #222;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-label {
+            color: #666;
+            font-size: 14px;
+        }
+        .detail-value {
+            font-size: 18px;
+        }
+        .metric {
+            text-align: center;
+            padding: 15px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .metric-value {
+            font-size: 24px;
+            color: #4169e1;
+            margin: 5px 0;
+        }
+        .metric-label {
+            color: #666;
+            font-size: 14px;
+        }
+        .summary {
+            grid-column: 1 / -1;
+            text-align: left;
+            color: #666;
+            font-size: 14px;
+            padding: 20px;
+            background: #111;
+            border-radius: 8px;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="section">
+            <div class="section-title">Prix et financement</div>
+            <div class="input-group">
+                <label>Prix du bien</label>
+                <input type="number" id="propertyPrice" value="200000">
+                <div class="unit">EUR</div>
+            </div>
+            <div class="input-group">
+                <label>Frais de notaire</label>
+                <input type="number" id="notaryFees" value="16000">
+                <div class="unit">EUR</div>
+            </div>
+            <div class="input-group">
+                <label>Travaux</label>
+                <input type="number" id="renovationCost" value="10000">
+                <div class="unit">EUR</div>
+            </div>
+            <div class="input-group">
+                <label>Apport personnel</label>
+                <input type="number" id="downPayment" value="40000">
+                <div class="unit">EUR</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Revenus locatifs</div>
+            <div class="input-group">
+                <label>Loyer mensuel</label>
+                <input type="number" id="monthlyRent" value="900">
+                <div class="unit">EUR</div>
+            </div>
+            <div class="input-group">
+                <label>Charges récupérables</label>
+                <input type="number" id="serviceCharges" value="100">
+                <div class="unit">EUR</div>
+            </div>
+            <div class="input-group">
+                <label>Taux de vacance estimé</label>
+                <input type="number" id="vacancyRate" value="5">
+                <div class="unit">%</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Charges annuelles</div>
+            <div class="input-group">
+                <label>Taxe foncière</label>
+                <input type="number" id="propertyTax" value="1200">
+                <div class="unit">EUR</div>
+            </div>
+            <div class="input-group">
+                <label>Charges de copropriété</label>
+                <input type="number" id="condoFees" value="1800">
+                <div class="unit">EUR</div>
+            </div>
+            <div class="input-group">
+                <label>Assurance PNO</label>
+                <input type="number" id="insurance" value="400">
+                <div class="unit">EUR</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Prêt</div>
+            <div class="input-group">
+                <label>Taux d'intérêt</label>
+                <input type="number" id="interestRate" value="3.5" step="0.1">
+                <div class="unit">%</div>
+            </div>
+            <div class="input-group">
+                <label>Durée du prêt</label>
+                <input type="number" id="loanDuration" value="20">
+                <div class="unit">ANNÉES</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Rentabilité</div>
+            <div class="metric">
+                <div class="metric-label">Rentabilité brute</div>
+                <div class="metric-value"><span id="grossYield">5.2</span>%</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Rentabilité nette</div>
+                <div class="metric-value"><span id="netYield">3.8</span>%</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Cash-flow mensuel</div>
+                <div class="metric-value"><span id="monthlyCashFlow">127</span> €</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Synthèse annuelle</div>
+            <div class="detail-row">
+                <span class="detail-label">Revenus locatifs</span>
+                <span class="detail-value"><span id="yearlyIncome">10800</span> €</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Charges totales</span>
+                <span class="detail-value"><span id="yearlyExpenses">3400</span> €</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Mensualité du prêt</span>
+                <span class="detail-value"><span id="monthlyPayment">773</span> €</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Résultat net avant impôts</span>
+                <span class="detail-value"><span id="netIncome">7400</span> €</span>
+            </div>
+        </div>
+
+        <div class="summary">
+            Pour un investissement total de <span id="totalInvestment">226000</span> € dont <span id="summaryDownPayment">40000</span> € d'apport,
+            vous obtenez une rentabilité brute de <span id="summaryGrossYield">5.2</span>% et un cash-flow mensuel de <span id="summaryCashFlow">127</span> €.
+            Le montant emprunté est de <span id="loanAmount">186000</span> € sur <span id="summaryDuration">20</span> ans.
+        </div>
+    </div>
+
+    <script>
+        const inputs = document.querySelectorAll('input');
+        
+        function calculateInvestment() {
+            // Get all input values
+            const propertyPrice = parseFloat(document.getElementById('propertyPrice').value) || 0;
+            const notaryFees = parseFloat(document.getElementById('notaryFees').value) || 0;
+            const renovationCost = parseFloat(document.getElementById('renovationCost').value) || 0;
+            const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+            const monthlyRent = parseFloat(document.getElementById('monthlyRent').value) || 0;
+            const serviceCharges = parseFloat(document.getElementById('serviceCharges').value) || 0;
+            const vacancyRate = parseFloat(document.getElementById('vacancyRate').value) || 0;
+            const propertyTax = parseFloat(document.getElementById('propertyTax').value) || 0;
+            const condoFees = parseFloat(document.getElementById('condoFees').value) || 0;
+            const insurance = parseFloat(document.getElementById('insurance').value) || 0;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const loanDuration = parseFloat(document.getElementById('loanDuration').value) || 0;
+
+            // Calculate total investment
+            const totalInvestment = propertyPrice + notaryFees + renovationCost;
+            const loanAmount = totalInvestment - downPayment;
+
+            // Calculate yearly income
+            const yearlyRentGross = monthlyRent * 12;
+            const yearlyRentNet = yearlyRentGross * (1 - vacancyRate/100);
+            const yearlyServiceCharges = serviceCharges * 12;
+            const yearlyIncome = yearlyRentNet + yearlyServiceCharges;
+
+            // Calculate yearly expenses
+            const yearlyExpenses = propertyTax + condoFees + insurance;
+
+            // Calculate loan payment
+            const monthlyRate = interestRate / 100 / 12;
+            const numberOfPayments = loanDuration * 12;
+            const monthlyPayment = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / 
+                                 (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+
+            // Calculate yields
+            const grossYield = (yearlyRentGross / totalInvestment) * 100;
+            const netYield = ((yearlyIncome - yearlyExpenses) / totalInvestment) * 100;
+            const monthlyCashFlow = monthlyRent + serviceCharges - (yearlyExpenses/12) - monthlyPayment;
+            const netIncome = yearlyIncome - yearlyExpenses - (monthlyPayment * 12);
+
+            // Update display
+            document.getElementById('grossYield').textContent = grossYield.toFixed(1);
+            document.getElementById('netYield').textContent = netYield.toFixed(1);
+            document.getElementById('monthlyCashFlow').textContent = Math.round(monthlyCashFlow);
+            document.getElementById('yearlyIncome').textContent = Math.round(yearlyIncome).toLocaleString();
+            document.getElementById('yearlyExpenses').textContent = Math.round(yearlyExpenses).toLocaleString();
+            document.getElementById('monthlyPayment').textContent = Math.round(monthlyPayment).toLocaleString();
+            document.getElementById('netIncome').textContent = Math.round(netIncome).toLocaleString();
+
+            // Update summary
+            document.getElementById('totalInvestment').textContent = Math.round(totalInvestment).toLocaleString();
+            document.getElementById('summaryDownPayment').textContent = Math.round(downPayment).toLocaleString();
+            document.getElementById('summaryGrossYield').textContent = grossYield.toFixed(1);
+            document.getElementById('summaryCashFlow').textContent = Math.round(monthlyCashFlow).toLocaleString();
+            document.getElementById('loanAmount').textContent = Math.round(loanAmount).toLocaleString();
+            document.getElementById('summaryDuration').textContent = loanDuration;
+        }
+
+        inputs.forEach(input => {
+            input.addEventListener('input', calculateInvestment);
+        });
+
+        calculateInvestment();
+    </script>
+</body>
+</html>
